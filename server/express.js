@@ -7,6 +7,7 @@ import helmet from 'helmet'
 import Template from './../template.js'
 import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import noteRoutes from './routes/note.routes.js'
 import path from 'path'
 const app = express()
 const CURRENT_WORKING_DIR = process.cwd()
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', userRoutes)
 app.use('/', authRoutes)
+app.use('/', noteRoutes)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
