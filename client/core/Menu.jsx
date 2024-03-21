@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button, Avatar } from "@material-ui/core";
 import auth from "../lib/auth-helper";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "./../assets/images/logo.png";
 
 const isActive = (location, path) => {
@@ -11,7 +11,6 @@ const isActive = (location, path) => {
 };
 
 export default function Menu() {
-  const navigate = useNavigate();
   const location = useLocation();
   return (
     <AppBar position="static">
@@ -20,19 +19,6 @@ export default function Menu() {
           <Avatar src={logo} />
         </Link>
         <Typography variant="h6">Todo App</Typography>
-        <Link to="/users">
-          <Button style={isActive(location, "/users")}>Users</Button>
-        </Link>
-        {!auth.isAuthenticated() && (
-          <span>
-            <Link to="/signup">
-              <Button style={isActive(location, "/signup")}>Sign up</Button>
-            </Link>
-            <Link to="/signin">
-              <Button style={isActive(location, "/signin")}>Sign In</Button>
-            </Link>
-          </span>
-        )}
         {auth.isAuthenticated() && (
           <span>
             <Link to={"/user/" + auth.isAuthenticated().user._id}>
@@ -48,7 +34,7 @@ export default function Menu() {
             <Button
               color="inherit"
               onClick={() => {
-                auth.clearJWT(() => navigate("/"));
+                auth.clearJWT(() => window.location.reload());
               }}
             >
               Sign out

@@ -55,12 +55,12 @@ export default function Profile({ match }) {
     }, [userId])
 
     if (redirectToSignin) {
-        return <Navigate to="/signin" state={{ from: location.pathname }} replace />;
+        return <Navigate to="/" state={{ from: location.pathname }} replace />;
 
     }
     if (auth.isAuthenticated()) {
-        console.log(auth.isAuthenticated().user._id)
-        console.log(user._id)
+        // console.log(auth.isAuthenticated().user._id)
+        // console.log(user._id)
     }
     return (
         <Paper className={classes.root} elevation={4}>
@@ -95,5 +95,3 @@ export default function Profile({ match }) {
         </Paper>
     )
 }
-
-
