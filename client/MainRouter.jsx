@@ -11,9 +11,9 @@ import { Box } from "@material-ui/core";
 function MainRouter() {
   return (
     <Box
-      paddingTop="80px"
+      paddingTop="180px"
       display="flex"
-      height="80vh"
+      height="60vh"
       justifyContent="center"
       alignItems="center"
     >
