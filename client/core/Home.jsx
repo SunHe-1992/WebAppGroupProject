@@ -84,9 +84,8 @@ export default function Home() {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, message: data.message });
+        setValues({ ...values, message: data.message, title: "", content: "" });
       }
-      console.log(values);
       setOpenSnackbar(true);
     });
   };
@@ -107,66 +106,80 @@ export default function Home() {
         onClose={handleCloseSnackbar}
         message={values.message}
       />
-      {!auth.isAuthenticated() ? (
-        isSignup ? (
-          <Signup toggleSignupSignin={toggleSignupSignin} />
-        ) : (
-          <Signin toggleSignupSignin={toggleSignupSignin} />
-        )
-      ) : (
-        <>
-          <Dialog open={openDialog} onClose={toggleDialog}>
-            <DialogTitle>Add Task</DialogTitle>
-            <DialogContent>
-              <TextField
-                label="Title"
-                className={classes.textField}
-                value={values.title}
-                onChange={handleChange("title")}
-              />
-              <TextField
-                label="Content"
-                className={classes.textField}
-                value={values.content}
-                onChange={handleChange("content")}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddTask}
-              >
-                Add
-              </Button>
-            </DialogContent>
-          </Dialog>
-          <Box
-            justifyContent="center"
-            alignItems="center"
-            display="flex"
-            marginTop="30px"
-            flexDirection="column"
-          >
-            <Typography variant="h3">TODO LIST</Typography>
-            <Box width="600px" marginTop="30px">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={toggleDialog}
-              >
-                Add Task
-              </Button>
-              {notes.slice(0, 5).map((data, index) => {
-                return (
-                  <Paper className={classes.root} elevation={4} key={index}>
-                    <Typography>Title: {data.title}</Typography>
-                    <Typography>Content: {data.content}</Typography>
-                  </Paper>
-                );
-              })}
-            </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        {!auth.isAuthenticated() && (
+          <Box maxWidth="600px" textAlign="center">
+            <Typography variant="h2">
+              Organize your work and life, finally.
+            </Typography>
+            <br />
+            <Typography variant="h6">
+              Become focused, organized, and calm. The world’s #1 to-do list
+              app.
+            </Typography>
           </Box>
-        </>
-      )}
+        )}
+
+        {!auth.isAuthenticated() ? (
+          isSignup ? (
+            <Signup toggleSignupSignin={toggleSignupSignin} />
+          ) : (
+            <Signin toggleSignupSignin={toggleSignupSignin} />
+          )
+        ) : (
+          <>
+            <Dialog open={openDialog} onClose={toggleDialog}>
+              <DialogTitle>Add Task</DialogTitle>
+              <DialogContent>
+                <TextField
+                  label="Title"
+                  className={classes.textField}
+                  value={values.title}
+                  onChange={handleChange("title")}
+                />
+                <TextField
+                  label="Content"
+                  className={classes.textField}
+                  value={values.content}
+                  onChange={handleChange("content")}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddTask}
+                >
+                  Add
+                </Button>
+              </DialogContent>
+            </Dialog>
+            <Box
+              justifyContent="center"
+              alignItems="center"
+              display="flex"
+              flexDirection="column"
+            >
+              <Typography variant="h3">TODO LIST</Typography>
+              <Box width="600px" marginTop="30px">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleDialog}
+                >
+                  Add Task
+                </Button>
+                {notes.slice(0, 5).map((data, index) => {
+                  return (
+                    <Paper className={classes.root} elevation={4} key={index}>
+                      <Typography>Title: {data.title}</Typography>
+                      <Typography>Content: {data.content}</Typography>
+                    </Paper>
+                  );
+                })}
+              </Box>
+            </Box>
+          </>
+        )}
+      </Box>
     </>
   );
 }

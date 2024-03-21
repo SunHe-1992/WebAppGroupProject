@@ -16,8 +16,7 @@ import { signin } from "./api-auth.js";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    maxWidth: 400,
-    margin: "0 auto",
+    width: "500px",
     marginTop: theme.spacing(3),
     padding: theme.spacing(2),
     textAlign: "center",

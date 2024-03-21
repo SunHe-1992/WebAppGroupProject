@@ -10,7 +10,13 @@ import { Box } from "@material-ui/core";
 
 function MainRouter() {
   return (
-    <Box marginTop="100px">
+    <Box
+      paddingTop="80px"
+      display="flex"
+      height="80vh"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Menu />
       <Routes>
         <Route path="/" element={<Home />} />
