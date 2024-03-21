@@ -4,7 +4,7 @@ import errorHandler from './../helpers/dbErrorHandler.js'
 import formidable from 'formidable'
 
 const create = async (req, res) => {
-    console.log("note create");
+    // console.log("note create");
     const note = new Note(req.body)
     note.owner = req.profile
     try {
@@ -43,7 +43,7 @@ const read = (req, res) => {
 const update = async (req, res) => {
     try {
         const noteId = req.params;
-        console.log("update a note by id" + noteId);
+        // console.log("update a note by id" + noteId);
         let note = req.note
         note = extend(note, req.body)
         note.updated = Date.now()
