@@ -13,7 +13,7 @@ const isActive = (location, path) => {
 export default function Menu() {
   const location = useLocation();
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <Link to="/">
           <Avatar src={logo} />

@@ -16,4 +16,16 @@ const add = async (data, authData) => {
   }
 };
 
-export { add };
+const getAll = async (signal, authData) => {
+  try {
+    let response = await fetch("/api/notes/", {
+      method: "GET",
+      signal: signal,
+    });
+    return await response.json();
+  } catch (err) {
+    // console.log(err);
+  }
+};
+
+export { add, getAll };
