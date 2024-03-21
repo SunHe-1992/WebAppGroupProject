@@ -59,13 +59,9 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     try {
         let note = req.note
-        console.log("log 62 " + note)
-        let deletedNote = note.remove()
-        console.log("log 64")
+        let deletedNote = await note.deleteOne()
         res.json(deletedNote)
-        console.log("successfully removed note by id" + id)
     } catch (err) {
-        console.log("error remove note")
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })

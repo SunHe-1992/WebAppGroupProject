@@ -5,6 +5,9 @@ import noteCtrl from '../controllers/note.controller.js'
 
 const router = express.Router()
 
+router.param('noteId', noteCtrl.noteByID)
+router.param('userId', userCtrl.userByID)
+
 router.route('/api/notes')
     .get(noteCtrl.list)
 
@@ -18,9 +21,5 @@ router.route('/api/notes/by/:userId')
 router.route('/api/notes/:noteId')
     .put(authCtrl.requireSignin, noteCtrl.isOwner, noteCtrl.update)
     .delete(authCtrl.requireSignin, noteCtrl.isOwner, noteCtrl.remove)
-
-
-router.param('noteId', noteCtrl.noteByID)
-router.param('userId', userCtrl.userByID)
 
 export default router
