@@ -21,7 +21,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
 //import ArrowForward from '@material-ui/core/ArrowForward'
 import ArrowForward from '@material-ui/icons/ArrowForward';
-import unicornbikeImg from './../assets/images/unicornbikeImg.jpg'
+import logo from './../assets/images/logo.png'
 const useStyles = makeStyles(theme => ({
     card: {
         // Define your card styles here
@@ -48,11 +48,11 @@ export default function Users() {
         const abortController = new AbortController()
         const signal = abortController.signal
         list(signal).then((data) => {
-            console.log(data)
+            // console.log(data)
             if (data && data.error) {
-                console.log(data.error)
+                // console.log(data.error)
             } else {
-                console.log(data)
+                // console.log(data)
                 setUsers(data)
             }
         })
@@ -89,4 +89,3 @@ export default function Users() {
         </Paper>
     )
 }
-

@@ -4,11 +4,11 @@ import mongoose from 'mongoose'
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri, {
     // useNewUrlParser: true,
-    //useCreateIndex: true, 
+    //useCreateIndex: true,
     // useUnifiedTopology: true
 })
     .then(() => {
-        console.log("Connected to the database!");
+        // console.log("Connected to the database!");
     })
 
 mongoose.connection.on('error', () => {
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 app.listen(config.port, (err) => {
     if (err) {
-        console.log(err)
+        // console.log(err)
     }
-    console.info('Server started on port %s.', config.port)
+    // console.info('Server started on port %s.', config.port)
 })
