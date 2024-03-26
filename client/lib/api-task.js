@@ -28,4 +28,22 @@ const getAll = async (signal, authData) => {
   }
 };
 
-export { add, getAll };
+const update = async (data, authData) => {
+  try {
+    let response = await fetch(`/api/notes/${authData.noteId}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authData.jwtToken,
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { add, getAll, update };
