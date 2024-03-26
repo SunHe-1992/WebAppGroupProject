@@ -96,16 +96,22 @@ export default function Home() {
   };
 
   const handleEditChange = (name) => (event) => {
+    // console.log(" handleEditChange name =" + name)
+    // console.log(" handleEditChange event.target.value =" + event.target.value)
     setValues({ ...values, [name]: event.target.value });
   };
+  const handleEditCheckChange = () => (event) => {
+    setValues({ ...values, ["isTaskFinished"]: event.target.checked });
+  };
   const handleEditTask = () => {
-    console.log("note id is " + initValues.noteId)
     const task = {
       title: values.title,
       content: values.content,
       isTask: values.isTask,
       isTaskFinished: values.isTaskFinished,
     };
+    console.log("note id is " + initValues.noteId)
+    console.log("note task " + JSON.stringify(task))
     const authData = {
       userId: jwt.user._id,
       jwtToken: jwt.token,
@@ -222,6 +228,12 @@ export default function Home() {
             <Dialog open={openEditWindow} onClose={toggleEditWindow}>
               <DialogTitle>Edit Task</DialogTitle>
               <DialogContent>
+                <Checkbox
+                  label="Finished"
+                  // className={classes.Checkbox}
+                  checked={values.isTaskFinished}
+                  onChange={handleEditCheckChange()}
+                ></Checkbox>
                 <Input
                   label="Title"
                   className={classes.textField}
@@ -262,7 +274,7 @@ export default function Home() {
                 {notes.slice(0, 5).map((data, index) => {
                   return (
                     <Paper className={classes.root} elevation={4} key={index}>
-                      <Checkbox value={data.isTaskFinished}></Checkbox>
+                      <Checkbox checked={data.isTaskFinished}></Checkbox>
                       <Typography>Title: {data.title}</Typography>
                       <Typography>Content: {data.content}</Typography>
                       <Button
