@@ -13,8 +13,10 @@ import {
   Button,
   Paper,
   Snackbar,
+  Checkbox,
+  Input,
 } from "@material-ui/core";
-import { add, getAll } from "../lib/api-task";
+import { add, getAll, update } from "../lib/api-task";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -34,16 +36,19 @@ const initValues = {
   isTask: true,
   isTaskFinished: false,
   message: "",
+  noteId: 0
 };
 
 export default function Home() {
   const [jwt, setJwt] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditWindow, setOpenEdit] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const classes = useStyles();
   const [isSignup, setIsSignup] = useState(true);
   const toggleSignupSignin = () => setIsSignup(!isSignup);
   const toggleDialog = () => setOpenDialog(!openDialog);
+  const toggleEditWindow = () => setOpenEdit(!openEditWindow);
   const [notes, setNotes] = useState([]);
   const [values, setValues] = useState(initValues);
 
@@ -90,6 +95,34 @@ export default function Home() {
     });
   };
 
+  const handleEditChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+  const handleEditTask = () => {
+    console.log("note id is "+ initValues.noteId)
+    const task = {
+      title: values.title,
+      content: values.content,
+      isTask: values.isTask,
+      isTaskFinished: values.isTaskFinished,
+    };
+    const authData = {
+      userId: jwt.user._id,
+      jwtToken: jwt.token,
+      noteId: initValues.noteId,
+    };
+    update(task, authData).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({ ...values, message: data.message, title: "", content: "" });
+      }
+      setOpenSnackbar(true);
+    });
+    toggleEditWindow()
+    window.location.reload();
+  };
+
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -97,6 +130,15 @@ export default function Home() {
     setOpenSnackbar(false);
   };
 
+
+  //edit button function
+  function handleEditClick(data) {
+    initValues.title = data.title
+    initValues.content = data.content
+    initValues.isTaskFinished = data.isTaskFinished
+    initValues.noteId = data._id
+    setOpenEdit(!openEditWindow)
+  }
   return (
     <>
       <Snackbar
@@ -152,6 +194,31 @@ export default function Home() {
                 </Button>
               </DialogContent>
             </Dialog>
+            <Dialog open={openEditWindow} onClose={toggleEditWindow}>
+              <DialogTitle>Edit Task</DialogTitle>
+              <DialogContent>
+                <Input
+                  label="Title"
+                  className={classes.textField}
+                  value={values.title}
+                  onChange={handleEditChange("title")}
+                />
+                <Input
+                  label="Content"
+                  className={classes.textField}
+                  value={values.content}
+                  onChange={handleEditChange("content")}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleEditTask}
+                >
+                  Save
+                </Button>
+              </DialogContent>
+            </Dialog>
+
             <Box
               justifyContent="center"
               alignItems="center"
@@ -170,8 +237,17 @@ export default function Home() {
                 {notes.slice(0, 5).map((data, index) => {
                   return (
                     <Paper className={classes.root} elevation={4} key={index}>
+                      <Checkbox value={data.isTaskFinished}></Checkbox>
                       <Typography>Title: {data.title}</Typography>
                       <Typography>Content: {data.content}</Typography>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        data={data.title}
+                        onClick={() => handleEditClick(data)}
+                      >
+                        Edit
+                      </Button>
                     </Paper>
                   );
                 })}
