@@ -16,7 +16,7 @@ import {
   Checkbox,
   Input,
 } from "@material-ui/core";
-import { add, getAll, update } from "../lib/api-task";
+import { add, getAll, update, remove } from "../lib/api-task";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -99,7 +99,7 @@ export default function Home() {
     setValues({ ...values, [name]: event.target.value });
   };
   const handleEditTask = () => {
-    console.log("note id is "+ initValues.noteId)
+    console.log("note id is " + initValues.noteId)
     const task = {
       title: values.title,
       content: values.content,
@@ -138,6 +138,31 @@ export default function Home() {
     initValues.isTaskFinished = data.isTaskFinished
     initValues.noteId = data._id
     setOpenEdit(!openEditWindow)
+  }
+
+  function handleRemoveClick(data) {
+    initValues.noteId = data._id
+    console.log("note id is " + initValues.noteId)
+    const task = {
+      title: values.title,
+      content: values.content,
+      isTask: values.isTask,
+      isTaskFinished: values.isTaskFinished,
+    };
+    const authData = {
+      userId: jwt.user._id,
+      jwtToken: jwt.token,
+      noteId: initValues.noteId,
+    };
+    remove(task, authData).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({ ...values, message: data.message, title: "", content: "" });
+      }
+      setOpenSnackbar(true);
+    });
+    window.location.reload();
   }
   return (
     <>
@@ -247,6 +272,14 @@ export default function Home() {
                         onClick={() => handleEditClick(data)}
                       >
                         Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        data={data.title}
+                        onClick={() => handleRemoveClick(data)}
+                      >
+                        Remove
                       </Button>
                     </Paper>
                   );

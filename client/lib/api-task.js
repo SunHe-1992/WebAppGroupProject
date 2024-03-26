@@ -45,5 +45,22 @@ const update = async (data, authData) => {
     console.log(err);
   }
 };
+const remove = async (data, authData) => {
+  try {
+    let response = await fetch(`/api/notes/${authData.noteId}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authData.jwtToken,
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-export { add, getAll, update };
+export { add, getAll, update, remove };
